@@ -1,0 +1,173 @@
+index5.html
+-----------
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style5.css">
+
+    <title>Country Information App</title>
+
+</head>
+
+<body>
+
+    <div class="country-container">
+
+        <h1>Country Information App</h1>
+
+        <div class="country-info">
+              <input type="text" id="country-inp" placeholder="Enter a country name here..."/>
+              <button id="search-btn"><img src="search.jpg"/></button>
+           
+
+
+        </div>
+        <div id="result"></div>
+
+    </div>
+
+    <script src="script5.js"></script>
+
+</body>
+
+</html>
+
+
+style5.css
+-----------
+body {
+
+    font-family: Arial, sans-serif;
+
+    margin: 0;
+
+    padding: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    height: 100vh;
+
+    background-color: #f0f0f0;
+
+}
+
+ 
+
+.country-container {
+
+    background-color:peru;
+   
+    padding: 20px;
+  
+    border-radius: 8px;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+ 
+
+.country-info {
+
+    margin-top: 20px;
+
+}
+.country-info{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.country-info input{
+    border-radius: 30px;
+    height:60px;
+    margin-right: 30px;
+    flex:1;
+}
+.country-info button{
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+.country-info button img{
+    width:25px;
+}
+.country-container .flag-img{
+    width: 45%;
+    display: block;
+    min-width: 7.5em;
+    margin:1.8em auto 1.2em auto;
+}
+.country-container h2{
+    color:black;
+    text-align: center;
+}
+
+.country-container h4{
+    display:inline;
+
+}
+
+
+
+script5.js
+-----------
+let searchBtn=document.getElementById("search-btn");
+let countryInp=document.getElementById("country-inp");
+searchBtn.addEventListener("click",()=>{
+    let countryName=countryInp.value;
+    let finalURL=`https://restcountries.com/v3.1/name/${countryName}?fullText=true`;
+    console.log(finalURL);
+    fetch(finalURL)
+    .then((response)=> response.json())
+    .then((data)=>{
+       console.log(data[0]); 
+        console.log(data[0].capital[0]);
+        console.log(data[0].flags.svg);
+        console.log(data[0].name.common);
+        console.log(data[0].continents[0]);
+        console.log(Object.values(data[0].languages).toString().split(",").join(","));
+      
+        result.innerHTML=`
+        <img src="${data[0].flags.svg}" class="flag-img">
+        <h2>${data[0].name.common}</h2>
+        <div class="wrapper">
+        <div class="data-wrapper">
+        <h4>capital:</h4>
+        <span>${data[0].capital[0]}</span>
+        </div>
+        </div>
+        <div class="wrapper">
+        <div class="data-wrapper">
+        <h4>continent:</h4>
+        <span>${data[0].continents[0]}</span>
+        </div>
+        </div>
+        <div class="wrapper">
+        <div class="data-wrapper">
+        <h4>population:</h4>
+        <span>${data[0].population}</span>
+        </div>
+        </div>
+        
+        <div class="wrapper">
+        <div class="data-wrapper">
+        <h4>languages:</h4>
+        <span>${Object.keys(data[0].languages).toString().split(",").join(",")}</span>
+        </div>
+        </div>`; 
+
+    });
+});
+
